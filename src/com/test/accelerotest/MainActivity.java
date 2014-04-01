@@ -11,11 +11,13 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,15 +25,19 @@ public class MainActivity extends Activity implements SensorEventListener {
 
 	static final String TAG = "SENSOR";
 	static final double THRESHOLD = 1;
-	static final int max = 50;
+	static final int max = 200;
 	
 	private GraphicalView mChart;
 	private SensorManager sensorManager;
 	private Sensor accelerometer;
 	private XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
     private XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
-    private XYSeries currentSeries;
-    private XYSeriesRenderer currentRenderer;
+    private XYSeries xSeries;
+    private XYSeries ySeries;
+    private XYSeries zSeries;
+    private XYSeriesRenderer xRenderer;
+    private XYSeriesRenderer yRenderer;
+    private XYSeriesRenderer zRenderer;
     private long startTime;
     private boolean isInitiated = false;
     
@@ -85,8 +91,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 		yAxis.setText("Y Axis: "+f.format(xyz[1]));
 		zAxis.setText("Z Axis: "+f.format(xyz[2]));
 		
-		long time = System.currentTimeMillis()-startTime;
-        addData(currentSeries,(double)(time), xyz[0]);
+		double time = (double)(System.currentTimeMillis()-startTime);
+        addData(xSeries,time, xyz[0]);
+        addData(ySeries,time, xyz[1]);
+        addData(zSeries,time, xyz[2]);
         mChart.repaint();
 	}
 	
@@ -102,10 +110,24 @@ public class MainActivity extends Activity implements SensorEventListener {
 	}
 	
 	private void initChart() {
-        currentSeries = new XYSeries("X direction");
-        dataset.addSeries(currentSeries);
-        currentRenderer = new XYSeriesRenderer();
-        renderer.addSeriesRenderer(currentRenderer);
+        xSeries = new XYSeries("X direction");
+        ySeries = new XYSeries("Y direction");
+        zSeries = new XYSeries("Z direction");
+        
+        dataset.addSeries(xSeries);
+        dataset.addSeries(ySeries);
+        dataset.addSeries(zSeries);
+
+        xRenderer = new XYSeriesRenderer();
+        xRenderer.setColor(Color.argb(255, 231, 76, 60));
+        yRenderer = new XYSeriesRenderer();
+        yRenderer.setColor(Color.argb(255, 52, 152, 219));
+        zRenderer = new XYSeriesRenderer();
+        zRenderer.setColor(Color.argb(255, 230, 126, 34));
+        
+        renderer.addSeriesRenderer(xRenderer);
+        renderer.addSeriesRenderer(yRenderer);
+        renderer.addSeriesRenderer(zRenderer);
     }
 	
 	@Override
