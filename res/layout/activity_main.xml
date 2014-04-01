@@ -13,14 +13,17 @@
                   
 	    <TextView android:id="@+id/x_axis" 
                   android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
+                  android:layout_width="0dp"
+                  android:layout_weight="1"
                   android:textSize="20sp" />
 	    <TextView android:id="@+id/y_axis" 
-                  android:layout_width="wrap_content"
+                  android:layout_width="0dp"
 	              android:layout_height="wrap_content"
+                  android:layout_weight="1"
 	              android:textSize="20sp" />
 	    <TextView android:id="@+id/z_axis" 
-                  android:layout_width="wrap_content"
+                  android:layout_width="0dp"
+                  android:layout_weight="1"
 	              android:layout_height="wrap_content"
 	              android:textSize="20sp" />
 	    
